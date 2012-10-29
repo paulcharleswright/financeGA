@@ -1,52 +1,61 @@
 close all
 clear all
 
-% This is probably a better way
-% Uses matrix representation to store strategies
+% This is the driver program which will make calls to other subprograms and
+% iterate through time. Default settings are determined here.
+
+% Uses matrix representation to store conditions
 % each first dimension (row) represents an individual strategy
 % each second dimension (column) represents a binary state of the market
 % Each third dimension represents an agent and all his strategies
 
+%Global variables that we might want to access in different parts of code
+%so we don't need to pass it every time we call the function.
 
-Lstrats = 30;     % first dimension
-Ntraders = 400;   % second dimension
-Nstrats = 500;     % third dimension
+global conditions
+global actions
 
+%Constants that don't ever change throughout run:
 
-strats = randi([-1 1],Nstrats,Lstrats,Ntraders); %Create random strategies
-state = (randi(2,1,Lstrats)-1.5)*2;              %Create a random market state to test with
+Lstrats = 3;     % first dimension
+Ntraders = 4;   % second dimension
+Nstrats = 5;     % third dimension
+tmax = 2;
 
-%state(ones(1,Nstrats),:,ones(1,Ntraders))
+%Initialization:
 
-%match = strats - state(ones(1,Nstrats),:,ones(1,Ntraders))
+conditions = randi([-1 1],Nstrats,Lstrats,Ntraders); %Create random strategies
+actions = ones(Nstrats,2,Ntraders);
+actions(:,1,:) = randi([0 1],Nstrats,1,Ntraders);
+state = getMarketState(Lstrats);         
+t = 0;
+
 
 % To test if match, 0's mean strategy matches market
-test = sum(strats == state(ones(1,Nstrats),:,ones(1,Ntraders)),2) - sum(abs(strats),2);
+test = sum(conditions == state(ones(1,Nstrats),:,ones(1,Ntraders)),2) - sum(abs(conditions),2)
 
 
-disp('hi')
+%to extract only the strategy that each agent should use
+% NEED TO SORT STRATEGIES BY STRENGTH BEFOREHAND 
+%    so that the first strategy is the best one
+%    unless we want a fitness based selection
 
-%% Bad Mechanism to store agents
+[cond agent] = find(test ==0)
+[useless ind] = unique(agent,'first');
 
-% 
-% close all;
-% clear all;
-% 
-% %agents = cell(5,1);
-% 
-% %agents{:}=struct('strategies',zeros(2,2))
-% 
-% %agents{:}.strategies
-% 
-% 
-% agents = struct('strategies', cell(4,1),'fitness',ones(3,1));
-% 
-% for i = 1:4
-%     agents(i).strategies = randi(2,3,5)-1;
-% end
-% agents(1).strategies(1,:)
-% %size(agents(1).strategies)
-% %size([1 1 1 1 1])
-% agents(1).strategies(1,:) == [1 1 1 1 1]
-% 
+cond = cond(ind)
+agent = agent(ind)
+
+% Now index into actions matrix into (agent,cond) and somehow use 
+% that action
+%actions(cond,1,agent)
+actions([2 3] , 1 , [2 3])
+
+%while t < tmax
+%    state = getMarketState(Lstrats);
+%    
+%    
+%    
+%end
+
 
