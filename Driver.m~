@@ -15,8 +15,7 @@ clear all
 %global conditions   % conditions that agents hold that they try to match to strategies
 %global actions      % Buy/sell and strengths
 %global prices        % History of prices
-global agent
-global market
+global agents
 
 
 %Constants that don't ever change throughout run:
@@ -28,13 +27,13 @@ tmax = 2;
 
 %Initialization:
 
-%conditions = randi([-1 1],Nstrats,Lstrats,Ntraders); %Create random strategies
-%actions = ones(Nstrats,2,Ntraders);
+conditions = randi([-1 1],Nstrats,Lstrats,Ntraders); %Create random strategies
+actions = ones(Nstrats,2,Ntraders);
 %actions(:,1,:) = randi([0 1],Nstrats,1,Ntraders);
 %state = getMarketState(Lstrats);         
 t = 0;
 
-agent = struct('conditions',randi([-1 1],Nstrats,Lstrats,Ntraders),...
+agents = struct('conditions',randi([-1 1],Nstrats,Lstrats,Ntraders),...
     'actions',randi([0 1],Nstrats,1,Ntraders),...
     'strengths',ones(Nstrats,2,Ntraders));
 
@@ -43,21 +42,22 @@ market = struct('state',getMarketState(Lstrats),...
 
 
 % To test if match, 0's mean strategy matches market
-test = sum(agent.conditions == market.state(ones(1,Nstrats),:,ones(1,Ntraders)),2) - sum(abs(agent.conditions),2)
+test = sum(conditions == state(ones(1,Nstrats),:,ones(1,Ntraders)),2) - sum(abs(conditions),2)
 
 
 %to extract only the strategy that each agent should use
 %    NOT EXACTLY RIGHT
 
-[cond nagent] = find(test ==0)
-[useless ind] = unique(nagent,'first');  %Need better method for this
+[cond agent] = find(test ==0)
+[useless ind] = unique(agent,'first');  %Need better method for this
 
 cond = cond(ind)
-nagent = nagent(ind)
+agent = agent(ind)
 
 % Now index into actions matrix into (agent,cond) and somehow use 
 % that action
-agent.actions(cond,nagent)
+%actions(cond,1,agent)
+actions([2 3] , 1 , [2 3])
 
 
 
