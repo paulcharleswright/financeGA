@@ -25,7 +25,7 @@ t = 4;
 
 agent = struct('conditions',randi([-1 1],Nstrats,Lstrats,Ntraders),...
     'actions',randi([0 1],Nstrats,1,Ntraders),...
-    'strengths',ones(Nstrats,2,Ntraders)*100);
+    'strengths',ones(Nstrats,1,Ntraders)*100);
 
 market = struct('price',zeros(100,1),'state',(randi(2,1,Lstrats)-1.5)*2);
 
