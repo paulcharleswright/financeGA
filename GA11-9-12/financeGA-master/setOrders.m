@@ -14,9 +14,9 @@ orderBook = zeros(bookSize, 5);
 
 for i = 1:bookSize
     % Determine price based on action
-    if agent.action(i) == 1
+    if agent.actions(i) == 1
       orderBook(i,1) = lastPrice - randi(10);
-    elseif agent.action(i) == 0
+    elseif agent.actions(i) == 0
       orderBook(i,1) = lastPrice + randi(10);
     end
     % Set order size

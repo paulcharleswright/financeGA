@@ -1,10 +1,10 @@
-function [ maverage ] = movingAverage( n, t )
-%UNTITLED4 Summary of this function goes here
-%  returns n-day moving average from price time series
+function [ maverage ] = movingAverage( func, n, t)
+%Returns simple n-poing moving average of func
+%  returns n-day moving average from func data time series
 
 global market
 
-maverage = sum(market.price(t-n:t-1))/n;
+maverage = sum(func(t-n:t-1))/n;
 
 end
 

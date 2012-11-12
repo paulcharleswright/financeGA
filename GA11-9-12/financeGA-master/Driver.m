@@ -15,28 +15,30 @@ global agent
 global market
 
 %Constants that don't ever change throughout run:
-Lstrats = 3;     % first dimension
+Lstrats = 7;     % first dimension
 Ntraders = 4;    % second dimension
 Nstrats = 5;     % third dimension
 maxNoOrders = 5; % max number of orders an agent can have
 tmax = 7;        
 
 %Initialization:
-t = 4;
+t = 5;
 
 agent = struct('conditions',randi([-1 1],Nstrats,Lstrats,Ntraders),...
     'actions',randi([0 1],Nstrats,1,Ntraders),...
     'strengths',ones(Nstrats,1,Ntraders)*100);
 
-market = struct('price',zeros(100,1),...
+market = struct('price',zeros(tmax,1),...
     'state',(randi(2,1,Lstrats)-1.5)*2,...
-    'orderBook',NaN(Ntraders*maxNoOrders,6));
+    'orderBook',NaN(Ntraders*maxNoOrders,6),...
+    'dividend',getDividends(sqrt(.9),sqrt(.1),1,.1,tmax));
+
 %    'orderBookLength',Ntraders*maxNoOrders);
 
-market.state = getMarketState(Lstrats,4);
+market.state = getMarketState(6);
 while t < tmax
     
-    state = getMarketState(Lstrats,t)
+    state = getMarketState(t)
     % Get new market orders
     [ncond, nagent] = getOrders();
     
@@ -47,10 +49,8 @@ while t < tmax
     % update market properties, ie, price,
     setOrders([nagent,ncond]);
     
-    
     % mutate / recombine strategies
     evolveStrategies()
-    
     
     %update timestep
     t= t + 1;
