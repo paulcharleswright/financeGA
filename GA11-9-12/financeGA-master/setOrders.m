@@ -8,7 +8,7 @@ global market
 
 maxNumOrders = 3;
 totalAgents = length(agent.actions);
-bookSize = maxNumOrders * totalAgents
+bookSize = maxNumOrders * totalAgents;
 
 orderBook = zeros(bookSize, 5);
 
