@@ -23,29 +23,30 @@ tmax = 7;
 
 %Initialization:
 t = 5;
-
 agent = struct('conditions',randi([-1 1],Nstrats,Lstrats,Ntraders),...
     'actions',randi([0 1],Nstrats,1,Ntraders),...
     'strengths',ones(Nstrats,1,Ntraders)*100);  % Start them all at 100
-
 market = struct('price',zeros(tmax,1),...
-    'state',(randi(2,1,Lstrats)-1.5)*2,...
+    'state',NaN(tmax,Lstrats),...
+    'bestBuy',NaN(tmax,1),...
+    'bestSell',NaN(tmax,1),...
+    'interestRate',.05,...
     'orderBook',NaN(Ntraders*maxNoOrders,6),...
     'dividend',getDividends(sqrt(.9),sqrt(.1),1,.1,tmax));
 
 %    'orderBookLength',Ntraders*maxNoOrders);
+%market.state = getMarketState(6);
 
-market.state = getMarketState(6);
 while t < tmax
     
-    state = getMarketState(t);
+    getMarketState(t);
     % Get new market orders
-    [ncond, nagent] = getOrders();
-    
+    [ncond, nagent] = getOrders(t);
     
     % Put into order book and update order book
     % Update strengths
     % update market properties, ie, price,
+     
     setOrders([nagent,ncond]);
     
     % mutate / recombine strategies

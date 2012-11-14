@@ -1,4 +1,4 @@
-function [ cond, nagent ] = getOrders( )
+function [ cond, nagent ] = getOrders( t )
 %This compares the market state to each agents strategies and chooses the
 %one with the highest strength. 
 %
@@ -14,10 +14,12 @@ function [ cond, nagent ] = getOrders( )
 global agent
 global market
 
+curState = market.state(t,:);
+
 Nstrats = size(agent.conditions,1);
 Ntraders = size(agent.conditions,3);
 % To test if match, 0's mean strategy matches market
-test = sum(agent.conditions == market.state(ones(1,Nstrats),:,ones(1,Ntraders)),2)...
+test = sum(agent.conditions == curState(ones(1,Nstrats),:,ones(1,Ntraders)),2)...
     - sum(abs(agent.conditions),2);
 
 % to extract only the strategy that each agent should use
