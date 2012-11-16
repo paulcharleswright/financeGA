@@ -25,7 +25,10 @@ tmax = 7;
 t = 5;
 agent = struct('conditions',randi([-1 1],Nstrats,Lstrats,Ntraders),...
     'actions',randi([0 1],Nstrats,1,Ntraders),...
-    'strengths',ones(Nstrats,1,Ntraders)*100);  % Start them all at 100
+    'strengths',ones(Nstrats,1,Ntraders,tmax)*100);  % Start them all at 100
+                                               % Strategy, Trader, then Time
+                                               
+                                               
 market = struct('price',zeros(tmax,1),...
     'state',NaN(tmax,Lstrats),...
     'bestBuy',NaN(tmax,1),...
@@ -47,7 +50,7 @@ while t < tmax
     % Update strengths
     % update market properties, ie, price,
      
-    setOrders([nagent,ncond]);
+    %setOrders([nagent,ncond]);
     
     % mutate / recombine strategies
     evolveStrategies()

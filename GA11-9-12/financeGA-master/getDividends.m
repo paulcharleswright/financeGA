@@ -26,6 +26,6 @@ for i = 2:length(dividends)
 end
 
 % If you want to see a plot of the dividends:
-plot(dividends);
+%plot(dividends);
 
 end
